@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { PopupEpisodes } from './PopupEpisodes';
 import { PopupHeader } from './PopupHeader';
 import { PopupInfo } from './PopupInfo';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export function Popup({ settings: { visible, content = {} }, setSettings }) {
   const {
@@ -16,6 +16,14 @@ export function Popup({ settings: { visible, content = {} }, setSettings }) {
     location,
     episode: episodes
   } = content;
+
+  useEffect(() => {
+    if (visible) {
+      document.body.style = 'overflow-y: hidden; padding-right: 15px';
+    } else {
+      document.body.style = 'overflow-y: auto';
+    }
+  }, [visible]);
 
   const togglePopup = useCallback(
     (e) => {
