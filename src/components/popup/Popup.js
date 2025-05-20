@@ -39,6 +39,23 @@ export function Popup({ settings: { visible, content = {} }, setSettings }) {
     [setSettings]
   );
 
+  const handleEscapePress = (e) => {
+    if (e.code === 'Escape') {
+      setSettings((prevState) => ({
+        ...prevState,
+        visible: false
+      }));
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('keydown', handleEscapePress);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapePress);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <PopupContainer visible={visible} onClick={togglePopup}>
       <StyledPopup>
