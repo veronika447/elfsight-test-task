@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import { Logo } from './Logo';
+import { Form } from './Form';
 
 export function Header() {
   return (
     <HeaderContainer>
       <Logo />
+      <Form />
     </HeaderContainer>
   );
 }
@@ -12,6 +14,6 @@ export function Header() {
 const HeaderContainer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
