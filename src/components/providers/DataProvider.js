@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 
 const API_URL = 'https://rickandmortyapi.com/api/character/';
 
@@ -11,7 +18,7 @@ export function DataProvider({ children }) {
   const [info, setInfo] = useState({});
   const [apiURL, setApiURL] = useState(API_URL);
 
-  const fetchData = async (url) => {
+  const fetchData = useCallback(async (url) => {
     setIsFetching(true);
     setIsError(false);
 
@@ -27,11 +34,16 @@ export function DataProvider({ children }) {
         setIsError(true);
         console.error(e);
       });
-  };
+  }, []);
+
+  const filterCharacters = useCallback(() => {
+    const queryStr = new URLSearchParams(window.location.search);
+    setApiURL(`${API_URL}?${queryStr}`);
+  }, []);
 
   useEffect(() => {
     fetchData(apiURL);
-  }, [apiURL]);
+  }, [apiURL, fetchData]);
 
   const dataValue = useMemo(
     () => ({
@@ -40,12 +52,20 @@ export function DataProvider({ children }) {
       apiURL,
       setApiURL,
       characters,
-      fetchData,
       isFetching,
       isError,
-      info
+      info,
+      filterCharacters
     }),
-    [activePage, apiURL, characters, isFetching, isError, info, fetchData]
+    [
+      activePage,
+      apiURL,
+      characters,
+      isFetching,
+      isError,
+      info,
+      filterCharacters
+    ]
   );
 
   return (

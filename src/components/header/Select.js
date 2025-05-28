@@ -54,7 +54,7 @@ export function Select({
 
   const handleIconClick = useCallback(() => {
     if (selected) {
-      setSelectedOption((prev) => ({ ...prev, [name]: null }));
+      setSelectedOption((prev) => ({ ...prev, [name]: '' }));
     } else {
       handlePlaceHolderClick();
     }
@@ -75,17 +75,17 @@ export function Select({
         tabIndex={0}
         selected={selected}
       >
-        {selected?.title || placeholder}
+        {selected || placeholder}
       </Placeholder>
       {isOpen && (
         <OptionsContainer isScroll={isOptionsScroll}>
           {options.map((option) => (
             <Option
-              key={option.value}
+              key={option}
               option={option}
               onClick={handleOptionClick}
               name={name}
-              selected={selected?.value === option.value}
+              selected={selected === option}
               setSelectedOption={setSelectedOption}
             />
           ))}

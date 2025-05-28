@@ -1,39 +1,45 @@
 import styled from 'styled-components';
 import { Select } from './Select';
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useData } from '../providers/DataProvider';
 
+const FILTER_OPTIONS = {
+  status: ['alive', 'dead', 'unknown'],
+  gender: ['female', 'male', 'genderless', 'unknown'],
+  species: [
+    'human',
+    'alien',
+    'Humanoid',
+    'unknown',
+    'Poopybutthole',
+    'Mythological Creature',
+    'Robot',
+    'Animal',
+    'Cronenberg',
+    'Disease'
+  ]
+};
+
 export function Form() {
-  const { characters } = useData();
-  const [optionsStatus, setOptionsStatus] = useState(null);
-  const [optionsGender, setOptionsGender] = useState(null);
-  const [optionsSpecies, setOptionsSpecies] = useState(null);
+  const { filterCharacters } = useData();
   const [state, setState] = useState({
-    status: null,
-    gender: null,
-    species: null,
+    status: '',
+    gender: '',
+    species: '',
     name: '',
     type: ''
   });
 
-  useEffect(() => {
-    const getOptions = (selector, callback) => {
-      const arr = characters.map((el) => el[selector]);
-      const set = new Set(arr);
-      callback(() =>
-        Array.from(set).map((el) => ({
-          value: el,
-          title: el
-        }))
-      );
-    };
-
-    getOptions('status', setOptionsStatus);
-    getOptions('gender', setOptionsGender);
-    getOptions('species', setOptionsSpecies);
-  }, [characters]);
-
   const handleResetButton = useCallback(() => {
+    const url = new URL(window.location.href);
+    for (const key in state) {
+      if (url.searchParams.has(key)) {
+        url.searchParams.delete(key);
+      }
+    }
+    window.history.replaceState(null, null, url.toString());
+    filterCharacters();
+
     setState({
       status: null,
       gender: null,
@@ -41,7 +47,7 @@ export function Form() {
       name: '',
       type: ''
     });
-  }, []);
+  }, [state, filterCharacters]);
 
   const handleChange = useCallback((e) => {
     e.preventDefault();
@@ -54,15 +60,22 @@ export function Form() {
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      console.log(state);
+      const url = new URL(window.location.href);
+      for (const key in state) {
+        if (state[key]) {
+          url.searchParams.set(key, state[key]);
+        }
+      }
+      window.history.replaceState(null, null, url.toString());
+      filterCharacters();
     },
-    [state]
+    [state, filterCharacters]
   );
 
   return (
     <StyledForm onSubmit={handleSubmit}>
       <Select
-        options={optionsStatus}
+        options={FILTER_OPTIONS.status}
         placeholder="Status"
         key="status"
         name="status"
@@ -70,7 +83,7 @@ export function Form() {
         setSelectedOption={setState}
       />
       <Select
-        options={optionsGender}
+        options={FILTER_OPTIONS.gender}
         placeholder="Gender"
         key="gender"
         name="gender"
@@ -78,7 +91,7 @@ export function Form() {
         setSelectedOption={setState}
       />
       <Select
-        options={optionsSpecies}
+        options={FILTER_OPTIONS.species}
         placeholder="Species"
         key="species"
         name="species"
@@ -170,9 +183,6 @@ const Button = styled.button`
     type === 'submit' ? 'rgba(131, 191, 70, 1)' : 'rgba(255, 81, 82, 1)'};
   cursor: pointer;
   transition: all 0.5s;
-  font-family: 'Inter';
-  font-weight: 400;
-  font-size: 16px
 
   &:hover {
     color: rgba(245, 245, 245, 1);

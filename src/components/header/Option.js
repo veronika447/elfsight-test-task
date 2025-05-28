@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 
 export function Option({ option, onClick, name, selected, setSelectedOption }) {
-  const { value, title } = option;
+  // const { value, title } = option;
   const handleClick = useCallback(() => {
     onClick();
     setSelectedOption((prev) => ({ ...prev, [name]: option }));
@@ -10,12 +10,12 @@ export function Option({ option, onClick, name, selected, setSelectedOption }) {
 
   return (
     <StyledOption
-      value={value}
+      value={option}
       onClick={handleClick}
       tabIndex={0}
       selected={selected}
     >
-      {title}
+      {option}
     </StyledOption>
   );
 }
@@ -29,6 +29,7 @@ const StyledOption = styled.li`
   font-weight: ${(props) => (props.selected ? '600' : '400')};
   font-size: 16px;
   line-height: 140%;
+  text-transform: capitalize;
 
   &:hover {
     background-color: rgba(131, 191, 70, 0.2);
