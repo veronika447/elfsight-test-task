@@ -202,6 +202,8 @@ const Button = styled.button`
     type === 'submit' ? 'rgba(131, 191, 70, 1)' : 'rgba(255, 81, 82, 1)'};
   cursor: pointer;
   transition: all 0.5s;
+  font-family: 'Inter';
+  font-size: 16px;
 
   &:hover {
     color: rgba(245, 245, 245, 1);

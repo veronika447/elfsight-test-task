@@ -39,22 +39,24 @@ export function Popup({ settings: { visible, content = {} }, setSettings }) {
     [setSettings]
   );
 
-  const handleEscapePress = (e) => {
-    if (e.code === 'Escape') {
-      setSettings((prevState) => ({
-        ...prevState,
-        visible: false
-      }));
-    }
-  };
+  const handleEscapePress = useCallback(
+    (e) => {
+      if (e.code === 'Escape') {
+        setSettings((prevState) => ({
+          ...prevState,
+          visible: false
+        }));
+      }
+    },
+    [setSettings]
+  );
   useEffect(() => {
     document.addEventListener('keydown', handleEscapePress);
 
     return () => {
       document.removeEventListener('keydown', handleEscapePress);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleEscapePress]);
 
   return (
     <PopupContainer visible={visible} onClick={togglePopup}>
