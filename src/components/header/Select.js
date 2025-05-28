@@ -4,8 +4,13 @@ import { ReactComponent as ArrowDown } from '../../assets/icons/Chevron down.svg
 import { ReactComponent as Cross } from '../../assets/icons/Cross Icon.svg';
 import { Option } from './Option';
 
-export function Select({ options, placeholder }) {
-  const [selected, setSelectedOption] = useState(null);
+export function Select({
+  options,
+  placeholder,
+  name,
+  selected,
+  setSelectedOption
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const rootRef = useRef(null);
   const [isOptionsScroll, setIsOptionsScroll] = useState(false);
@@ -49,11 +54,11 @@ export function Select({ options, placeholder }) {
 
   const handleIconClick = useCallback(() => {
     if (selected) {
-      setSelectedOption(null);
+      setSelectedOption((prev) => ({ ...prev, [name]: null }));
     } else {
       handlePlaceHolderClick();
     }
-  }, [selected, setSelectedOption, handlePlaceHolderClick]);
+  }, [selected, setSelectedOption, handlePlaceHolderClick, name]);
 
   return (
     <SelectContainer ref={rootRef}>
@@ -79,6 +84,7 @@ export function Select({ options, placeholder }) {
               key={option.value}
               option={option}
               onClick={handleOptionClick}
+              name={name}
               selected={selected?.value === option.value}
               setSelectedOption={setSelectedOption}
             />

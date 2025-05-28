@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Select } from './Select';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useData } from '../providers/DataProvider';
 
 export function Form() {
@@ -8,12 +8,19 @@ export function Form() {
   const [optionsStatus, setOptionsStatus] = useState(null);
   const [optionsGender, setOptionsGender] = useState(null);
   const [optionsSpecies, setOptionsSpecies] = useState(null);
+  const [state, setState] = useState({
+    status: null,
+    gender: null,
+    species: null,
+    name: '',
+    type: ''
+  });
 
   useEffect(() => {
-    const getOptions = (selector, setState) => {
+    const getOptions = (selector, callback) => {
       const arr = characters.map((el) => el[selector]);
       const set = new Set(arr);
-      setState(() =>
+      callback(() =>
         Array.from(set).map((el) => ({
           value: el,
           title: el
@@ -24,15 +31,80 @@ export function Form() {
     getOptions('status', setOptionsStatus);
     getOptions('gender', setOptionsGender);
     getOptions('species', setOptionsSpecies);
-  }, [characters, optionsGender, optionsSpecies, optionsStatus]);
+  }, [characters]);
+
+  const handleResetButton = useCallback(() => {
+    setState({
+      status: null,
+      gender: null,
+      species: null,
+      name: '',
+      type: ''
+    });
+  }, []);
+
+  const handleChange = useCallback((e) => {
+    e.preventDefault();
+    setState((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  }, []);
+
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      console.log(state);
+    },
+    [state]
+  );
 
   return (
-    <StyledForm>
-      <Select options={optionsStatus} placeholder="Status" key="status" />
-      <Select options={optionsGender} placeholder="Gender" key="gender" />
-      <Select options={optionsSpecies} placeholder="Species" key="species" />
-      <StyledInput type="text" name="name" placeholder="Name"></StyledInput>
-      <StyledInput type="text" name="type" placeholder="Type"></StyledInput>
+    <StyledForm onSubmit={handleSubmit}>
+      <Select
+        options={optionsStatus}
+        placeholder="Status"
+        key="status"
+        name="status"
+        selected={state.status}
+        setSelectedOption={setState}
+      />
+      <Select
+        options={optionsGender}
+        placeholder="Gender"
+        key="gender"
+        name="gender"
+        selected={state.gender}
+        setSelectedOption={setState}
+      />
+      <Select
+        options={optionsSpecies}
+        placeholder="Species"
+        key="species"
+        name="species"
+        selected={state.species}
+        setSelectedOption={setState}
+      />
+      <StyledInput
+        type="text"
+        name="name"
+        placeholder="Name"
+        value={state.name}
+        onChange={handleChange}
+      ></StyledInput>
+      <StyledInput
+        type="text"
+        name="type"
+        placeholder="Type"
+        value={state.type}
+        onChange={handleChange}
+      ></StyledInput>
+      <StyledContainer>
+        <Button type="submit"> Apply </Button>
+        <Button type="reset" onClick={handleResetButton}>
+          Reset{' '}
+        </Button>
+      </StyledContainer>
     </StyledForm>
   );
 }
@@ -54,21 +126,57 @@ const StyledInput = styled.input`
   padding-left: 16px;
   cursor: pointer;
   transition: all 0.3s;
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: rgba(245, 245, 245, 1);
 
-  &:placeholder {
+  ::placeholder {
     font-family: 'Inter';
     font-weight: 400;
     font-size: 16px;
     line-height: 100%;
     letter-spacing: 0;
-    text-color: rgba(179, 179, 179, 1);
+    color: rgba(179, 179, 179, 1);
+  }
+
+  $:focus {
+    background-color: rgba(51, 68, 102, 1);
+    border: solid 1px rgba(131, 191, 70, 1);
   }
 
   &:hover {
     background-color: rgba(51, 68, 102, 1);
   }
+`;
 
-  $:focus {
-    background-color: rgba(51, 68, 102, 1);
+const StyledContainer = styled.div`
+  width: 100%;
+  display: flex;
+  column-gap: 10px;
+  height: 100%;
+`;
+
+const Button = styled.button`
+  width: 100%;
+  background-color: unset;
+  border: 1px solid
+    ${({ type }) =>
+      type === 'submit' ? 'rgba(131, 191, 70, 1)' : 'rgba(255, 81, 82, 1)'};
+  border-radius: 8px;
+  color: ${({ type }) =>
+    type === 'submit' ? 'rgba(131, 191, 70, 1)' : 'rgba(255, 81, 82, 1)'};
+  cursor: pointer;
+  transition: all 0.5s;
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 16px
+
+  &:hover {
+    color: rgba(245, 245, 245, 1);
+    background-color: ${({ type }) =>
+      type === 'submit' ? 'rgba(131, 191, 70, 1)' : 'rgba(255, 81, 82, 1)'};
   }
 `;

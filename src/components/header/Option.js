@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
 
-export function Option({ option, onClick, selected, setSelectedOption }) {
+export function Option({ option, onClick, name, selected, setSelectedOption }) {
   const { value, title } = option;
   const handleClick = useCallback(() => {
     onClick();
-    setSelectedOption(option);
-  }, [onClick, option, setSelectedOption]);
+    setSelectedOption((prev) => ({ ...prev, [name]: option }));
+  }, [onClick, option, setSelectedOption, name]);
 
   return (
     <StyledOption
