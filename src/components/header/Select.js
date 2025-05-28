@@ -131,6 +131,14 @@ const IconContainer = styled.div`
         !isOpen && selected && 'rgba(131, 191, 70, 1)'};
     }
   }
+
+  @media (max-width: 1519px) {
+    left: 120px;
+  }
+
+  @media (max-width: 949px) {
+    left: 210px;
+  }
 `;
 
 const Placeholder = styled.p`
@@ -156,4 +164,8 @@ const OptionsContainer = styled.ul`
   top: 45px;
   z-index: 15;
   overflow: ${({ isScroll }) => (isScroll ? 'auto' : 'none')};
+
+  @media (max-width: 1519px) {
+    width: 150px;
+  }
 `;

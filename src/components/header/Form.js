@@ -128,6 +128,19 @@ const StyledForm = styled.form`
   display: grid;
   grid-template-columns: repeat(3, 180px);
   gap: 10px;
+
+  @media (max-width: 1519px) {
+    width: 482px;
+    grid-template-columns: repeat(3, 150px);
+    gap: 15px;
+  }
+
+  @media (max-width: 949px) {
+    width: 240px;
+    height: 372px;
+    grid-template-columns: 240px;
+    gap: 5px;
+  }
 `;
 
 const StyledInput = styled.input`
@@ -170,10 +183,16 @@ const StyledContainer = styled.div`
   display: flex;
   column-gap: 10px;
   height: 100%;
+
+  @media (max-width: 949px) {
+    flex-direction: column;
+    row-gap: 15px;
+  }
 `;
 
 const Button = styled.button`
   width: 100%;
+  height: 40px;
   background-color: unset;
   border: 1px solid
     ${({ type }) =>
