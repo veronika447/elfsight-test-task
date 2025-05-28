@@ -28,7 +28,6 @@ const StyledOption = styled.li`
   font-weight: ${(props) => (props.selected ? '600' : '400')};
   font-size: 16px;
   line-height: 140%;
-  text-transform: capitalize;
 
   &:hover {
     background-color: rgba(131, 191, 70, 0.2);

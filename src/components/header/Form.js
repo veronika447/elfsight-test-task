@@ -4,11 +4,11 @@ import { useState, useCallback } from 'react';
 import { useData } from '../providers/DataProvider';
 
 const FILTER_OPTIONS = {
-  status: ['alive', 'dead', 'unknown'],
-  gender: ['female', 'male', 'genderless', 'unknown'],
+  status: ['Alive', 'Dead', 'unknown'],
+  gender: ['Female', 'Male', 'Genderless', 'unknown'],
   species: [
-    'human',
-    'alien',
+    'Human',
+    'Alien',
     'Humanoid',
     'unknown',
     'Poopybutthole',
@@ -158,6 +158,7 @@ const StyledInput = styled.input`
   line-height: 100%;
   letter-spacing: 0;
   color: rgba(245, 245, 245, 1);
+  text-overflow: ellipsis;
 
   ::placeholder {
     font-family: 'Inter';
@@ -168,7 +169,8 @@ const StyledInput = styled.input`
     color: rgba(179, 179, 179, 1);
   }
 
-  $:focus {
+  &:focus-within {
+    outline: none;
     background-color: rgba(51, 68, 102, 1);
     border: solid 1px rgba(131, 191, 70, 1);
   }
