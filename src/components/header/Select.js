@@ -72,24 +72,25 @@ export function Select({
       <Placeholder
         onClick={handlePlaceHolderClick}
         role="button"
-        tabIndex={0}
         selected={selected}
       >
         {selected || placeholder}
       </Placeholder>
       {isOpen && (
-        <OptionsContainer isScroll={isOptionsScroll}>
-          {options.map((option) => (
-            <Option
-              key={option}
-              option={option}
-              onClick={handleOptionClick}
-              name={name}
-              selected={selected === option}
-              setSelectedOption={setSelectedOption}
-            />
-          ))}
-        </OptionsContainer>
+        <DropdownMenu isScroll={isOptionsScroll}>
+          <OptionsContainer isScroll={isOptionsScroll}>
+            {options.map((option) => (
+              <Option
+                key={option}
+                option={option}
+                onClick={handleOptionClick}
+                name={name}
+                selected={selected === option}
+                setSelectedOption={setSelectedOption}
+              />
+            ))}
+          </OptionsContainer>
+        </DropdownMenu>
       )}
     </SelectContainer>
   );
@@ -100,8 +101,6 @@ const SelectContainer = styled.div`
   background-color: rgba(38, 55, 80, 1);
   border: solid 1px rgba(131, 191, 70, 1);
   border-radius: 8px;
-  padding: 12px;
-  padding-left: 16px;
   position: relative;
   cursor: pointer;
   z-index: 0;
@@ -117,6 +116,7 @@ const IconContainer = styled.div`
   height: 16px;
   position: absolute;
   left: 150px;
+  top: 12px;
   z-index: 1;
   transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'none')};
 
@@ -149,21 +149,50 @@ const Placeholder = styled.p`
   letter-spacing: 0;
   color: ${({ selected }) =>
     selected ? 'rgba(255, 255, 255, 1)' : 'rgba(179, 179, 179, 1)'};
+  height: 100%;
+  width: 100%;
+  padding: 12px;
+  padding-left: 16px;
 `;
 
-const OptionsContainer = styled.ul`
+const DropdownMenu = styled.div`
   width: 180px;
   height: auto;
-  max-height: 180px;
-  list-style: none;
+  padding: ${({ isScroll }) => (isScroll ? '2px 4px 2px 0' : '0')};
   background-color: rgba(255, 255, 255, 1);
   border: solid 1px rgba(217, 217, 217, 1);
   border-radius: 8px;
   position: absolute;
+  z-index: 10;
   left: 0;
   top: 45px;
-  z-index: 15;
+  box-shadow: 0 1px 4px 0 rgba(12, 12, 13, 0.1);
+`;
+
+const OptionsContainer = styled.ul`
+  width: 100%;
+  height: auto;
+  max-height: 180px;
+  list-style: none;
   overflow: ${({ isScroll }) => (isScroll ? 'auto' : 'none')};
+
+  :: -webkit-scrollbar {
+    width: 4px;
+    border-radius: 8px;
+    margin-right: 4px;
+  }
+
+  :: -webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(217, 217, 217, 1);
+  }
+
+  :: -webkit-scrollbar-track {
+    width: 4px;
+    height: 80px;
+    border-radius: 4px;
+    margin-right: 4px;
+  }
 
   @media (max-width: 1519px) {
     width: 150px;

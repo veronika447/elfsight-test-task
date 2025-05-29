@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Select } from './Select';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useData } from '../providers/DataProvider';
 
 const FILTER_OPTIONS = {
@@ -30,6 +30,18 @@ export function Form() {
     type: ''
   });
 
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    for (let [name, value] of url.searchParams) {
+      setState((prev) => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+
+    filterCharacters(url.searchParams);
+  }, [filterCharacters]);
+
   const handleResetButton = useCallback(() => {
     const url = new URL(window.location.href);
     for (const key in state) {
@@ -41,9 +53,9 @@ export function Form() {
     filterCharacters();
 
     setState({
-      status: null,
-      gender: null,
-      species: null,
+      status: '',
+      gender: '',
+      species: '',
       name: '',
       type: ''
     });
@@ -64,10 +76,12 @@ export function Form() {
       for (const key in state) {
         if (state[key]) {
           url.searchParams.set(key, state[key]);
+        } else {
+          url.searchParams.delete(key);
         }
       }
       window.history.replaceState(null, null, url.toString());
-      filterCharacters();
+      filterCharacters(url.searchParams);
     },
     [state, filterCharacters]
   );

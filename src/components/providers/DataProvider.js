@@ -36,9 +36,13 @@ export function DataProvider({ children }) {
       });
   }, []);
 
-  const filterCharacters = useCallback(() => {
-    const queryStr = new URLSearchParams(window.location.search);
-    setApiURL(`${API_URL}?${queryStr}`);
+  const filterCharacters = useCallback((queryStr) => {
+    if (queryStr) {
+      setApiURL(`${API_URL}?${queryStr}`);
+    } else {
+      setApiURL(API_URL);
+    }
+    setActivePage(0);
   }, []);
 
   useEffect(() => {

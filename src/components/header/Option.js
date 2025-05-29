@@ -22,12 +22,13 @@ export function Option({ option, onClick, name, selected, setSelectedOption }) {
 const StyledOption = styled.li`
   padding: 7px;
   padding-bottom: 6px;
-  z-index: 5;
+  z-index: 15;
   transition: all 0.3s;
   font-family: 'Inter';
   font-weight: ${(props) => (props.selected ? '600' : '400')};
   font-size: 16px;
   line-height: 140%;
+  border-radius: 4px;
 
   &:hover {
     background-color: rgba(131, 191, 70, 0.2);
