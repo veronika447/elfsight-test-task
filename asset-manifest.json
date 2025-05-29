@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/react-gh-pages/static/css/main.869ee58a.css",
+    "main.js": "/react-gh-pages/static/js/main.a51a998b.js",
+    "static/media/green-portal.png": "/react-gh-pages/static/media/green-portal.a218ca229093de6f08d2.png",
+    "static/media/widget-logo.png": "/react-gh-pages/static/media/widget-logo.42c8df0b92603ef2e2e2.png",
+    "static/media/male.svg": "/react-gh-pages/static/media/male.42d01c2c5e1d7025a594642a761f1939.svg",
+    "index.html": "/react-gh-pages/index.html",
+    "static/media/Cross Icon.svg": "/react-gh-pages/static/media/Cross Icon.a1fa68b5d258ff403626443c542b3b46.svg",
+    "static/media/genderless.svg": "/react-gh-pages/static/media/genderless.dec799ed2f3cfbb46522c185f9dbb030.svg",
+    "static/media/female.svg": "/react-gh-pages/static/media/female.02f202d68bdd63c12690625cf6aec3fd.svg",
+    "static/media/Chevron down.svg": "/react-gh-pages/static/media/Chevron down.ddfc8d07ddcb0e85b106281235942c24.svg",
+    "main.869ee58a.css.map": "/react-gh-pages/static/css/main.869ee58a.css.map",
+    "main.a51a998b.js.map": "/react-gh-pages/static/js/main.a51a998b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.869ee58a.css",
+    "static/js/main.a51a998b.js"
+  ]
+}
