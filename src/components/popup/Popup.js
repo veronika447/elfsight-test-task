@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { PopupEpisodes } from './PopupEpisodes';
 import { PopupHeader } from './PopupHeader';
 import { PopupInfo } from './PopupInfo';
+import { useCallback, useEffect } from 'react';
 
 export function Popup({ settings: { visible, content = {} }, setSettings }) {
   const {
@@ -16,19 +17,49 @@ export function Popup({ settings: { visible, content = {} }, setSettings }) {
     episode: episodes
   } = content;
 
-  function togglePopup(e) {
-    if (e.currentTarget !== e.target) {
-      return;
+  useEffect(() => {
+    if (visible) {
+      document.body.style = 'overflow-y: hidden; padding-right: 15px';
+    } else {
+      document.body.style = 'overflow-y: auto';
     }
+  }, [visible]);
 
-    setSettings((prevState) => ({
-      ...prevState,
-      visible: !prevState.visible
-    }));
-  }
+  const togglePopup = useCallback(
+    (e) => {
+      if (e.currentTarget !== e.target) {
+        return;
+      }
+
+      setSettings((prevState) => ({
+        ...prevState,
+        visible: !prevState.visible
+      }));
+    },
+    [setSettings]
+  );
+
+  const handleEscapePress = useCallback(
+    (e) => {
+      if (e.code === 'Escape') {
+        setSettings((prevState) => ({
+          ...prevState,
+          visible: false
+        }));
+      }
+    },
+    [setSettings]
+  );
+  useEffect(() => {
+    document.addEventListener('keydown', handleEscapePress);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapePress);
+    };
+  }, [handleEscapePress]);
 
   return (
-    <PopupContainer visible={visible}>
+    <PopupContainer visible={visible} onClick={togglePopup}>
       <StyledPopup>
         <CloseIcon onClick={togglePopup} />
 
